@@ -5,9 +5,9 @@ import sys
 pygame.init()
 
 # Configuración de pantalla
-WIDTH, HEIGHT = 800, 600 
+WIDTH, HEIGHT = 800, 600
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Juego de Laberinto")
+pygame.display.set_caption("Juego de Laberinto - Rintobel")
 
 # Colores
 WHITE = (255, 255, 255)
@@ -15,104 +15,14 @@ RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLACK = (0, 0, 0)
 
-# Representación de niveles del laberinto
-niveles = [
-    [
-        "##########################################################",
-        "#S        #                 #         #                 #E#",
-        "# # ##### # # ##### ##### # # ##### # ##### ##### # ### #",
-        "# #   #   #   #   #     #   #   #   #     #   #     #   #",
-        "# ### # ### # # # # ### # ##### # ##### ##### ###########",
-        "#   #     #   #   #   #   #   #     #   #   # #     #   #",
-        "# # ##### ########### # ##### ##### # ##### # ##### # # #",
-        "# #     # #   #     # # #   #   #   # #     #   #   # # #",
-        "### ### # ##### # ### # ### ### ### ### ### # ##### # # #",
-        "#   #   #     # #   # #   #   #   # #     # # #     #   #",
-        "# ##### # ### # ##### ### # ##### # ##### ### # #########",
-        "#   #   # #   # #   #   #   #     #   #   #     # #     #",
-        "# ### ### # ##### # ##### ######### # # # # ##### ##### #",
-        "# #   #   #     #   #   #     #   #   #   # #   #     # #",
-        "# # ######### # ### # ##### # # ##### ### ### ####### # #",
-        "# #   #     # #   # #     # # #   #   #   # #       # # #",
-        "# ### # ### ##### # ##### # ##### # # ### ######### # # #",
-        "#   # # #   #   #   #     #   #   # #   # #   #     # # #",
-        "# ### # # ######### ##### ##### # ##### # # ### ##### # #",
-        "#   # #   #   #       #     #   #   #   # #   #       # #",
-        "### ##### ### # ##### # ##### ### ### # # ### ###########",
-        "#   #   #   # #   #   #   #     #     # #   #           #",
-        "# # ### # ##### # ### # ### ##### ##### ######### ##### #",
-        "# #   # #     # # #   # # #   #     #   #         #   # #",
-        "### # ######### # ##### # ##### ##### ########### # # # #",
-        "#   # #   #   #     #   #   #   #   #     #     #   #   #",
-        "# ##### # # # ##### ##### # ### # ### ##### # ##### ###",
-        "#       #   #             #     #             #           #",
-        "##########################################################",
-    ],
-    [
-        "##########################################################",
-        "#S               #         #                             #E#",
-        "# ######### ##### ##### ##### ##### ##### ##### ##### ### #",
-        "# #       #   #   #   #     #     #   #   #   #   #   #   #",
-        "# # ##### # # # # # ##### ##### ##### # ##### ##### ##### #",
-        "#   #   # #   # # # #   #   #   #   #     #   #   #   #   #",
-        "### ### # ##### # # # ### # # # # # ##### # ##### ##### ###",
-        "#   #   #   #     #   #   # # # #   #   #     #       #   #",
-        "# # ##### # ##### ##### ##### ##### # # ######### ##### # #",
-        "# #     # #     #   #   #     #     # #     #     #   #   #",
-        "# ##### # # ### # ### # ##### ##### # # ##### # ### ##### #",
-        "#   #   #   #   #   # # #   #   #   #   #     #   #   #   #",
-        "# ### ##### ##### ### # # # # ##### ##### ##### ##### ### #",
-        "#   #   #     #     #   # # #       #   #   #   #   #   # #",
-        "# ##### # # ##### ##### # # # ##### # ### ##### # ##### # #",
-        "#     #   #       #     # # #     #   #   #     #   #   # #",
-        "##### ############# ##### # ##### ##### ########### ### # #",
-        "#   #   #         #     # #     #   #     #       #   #   #",
-        "# # # ##### # # ##### ### ##### # ######### ### # ##### # #",
-        "# #     #   # #   #   #     #   # #     #     #   #   #   #",
-        "### ##### ##### ### ##### ##### ### ##### ##### ### # ###",
-        "#   #     #   # #     #       #     #         #     #   #",
-        "# ##### ##### # ### ##### ######### ##### ##### ##### ### #",
-        "#     #       #       #     #     #   #   #       #   #   #",
-        "##### ######### ######### ##### ##### ##### ######### ### #",
-        "#   # #   #           #       #   #   #     #   #   #   # #",
-        "# # # # # # # ##### # ##### # # # ### ##### # ##### ##### #",
-        "# #   #   #     #   #   #   #   #   #   #   #   #   #   # #",
-        "##########################################################",
-    ],
-    [
-        "##########################################################",
-        "#S                 #     #     #     #     #     #       #E#",
-        "# ############### ### ### ### ### ### ### ### ### ##### ### #",
-        "# #             #   #   #   #   #   #   #   #   #     #   #   #",
-        "# ############# ### ### ### ### ### ### ### ######### ##### #",
-        "# #           #   #   #   #   #   #   #   #         #   #   #",
-        "# ######### ### ### ### ### ### ### ### ######### ### ### ###",
-        "#       #   #   #   #   #   #   #   #   #   #   #     #     #",
-        "##### ### ### ### ######### ### ### ### ### ### ########### #",
-        "#   #     #   #   #   #     #   #   #   #   #   #         # #",
-        "# ######### ### ##### ### ######### ### ### ### ######### # #",
-        "# #           #   #   #   #   #   #   #   #   # #   #   # # #",
-        "# ######### ### ######### ### ### ### ### ### # ### ### # # #",
-        "#       #   #     #   #     #   #   #   #   #   # #   #   # #",
-        "# ######### ### ### ### ######### ### ### ### ### ##### ### #",
-        "#   #     #   #   #   #   #   #   #   #   #   #     #     #",
-        "# ### ######### ### ### ### ### ### ### ### ########### ###",
-        "#   #       #   #   #   #   #   #   #   #   #         #   #",
-        "# ##### ### ### ### ### ### ### ### ### ######### ##### # #",
-        "#     #   #   #   #   #   #   #   #   #       #   #   #   #",
-        "# ### ### ### ### ### ######### ### ######### ### # ##### #",
-        "# #   #   #   #   #     #   #   # #         #   #   #     #",
-        "# # ### ### ### ### ##### # ### # # ######### ########### #",
-        "# #     #   #   #     #   #   #   #       #   #           #",
-        "# ##### ### # ##### # ########### ##### ### ### ######### #",
-        "#     #   # #       #         #       #   #   #   #     # #",
-        "### ##### # ##### ######### ######### ### ### ### ##### # #",
-        "#   #     #     #     #   #         #   #   #   #   #   # #",
-        "# ######### ##### ##### ### ######### ##### ##### ### ### #",
-        "#                 #     #               #               #   #",
-        "##########################################################",
-    ],
-]
+# Función para cargar niveles desde un archivo
+def cargar_niveles(filename):
+    with open(filename, "r") as file:
+        niveles = [level.strip().split("\n") for level in file.read().strip().split("\n\n")]
+    return niveles
+
+# Cargar niveles desde el archivo
+niveles = cargar_niveles("niveles.txt")
 
 # Tamaño de celda
 CELL_SIZE = WIDTH // len(niveles[0][0])
@@ -120,11 +30,19 @@ CELL_SIZE = WIDTH // len(niveles[0][0])
 # Nivel actual
 nivel_actual = 0
 
+# Estado del juego (0: Pantalla de inicio, 1: Jugando, 2: Juego completo)
+estado_juego = 0
+
 # Posición inicial del jugador
 player_x, player_y = 1, 1
 
 # Mensaje de nivel actual
 font = pygame.font.Font(None, 36)
+
+# Mensaje de inicio
+inicio_font = pygame.font.Font(None, 72)
+inicio_texto = inicio_font.render("Rintobel", True, GREEN)
+inicio_rect = inicio_texto.get_rect(center=(WIDTH // 2, HEIGHT // 2))
 
 # Bucle principal del juego
 running = True
@@ -132,41 +50,51 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        elif event.type == pygame.KEYDOWN:
-            try:
-                # Mover al jugador en función de la tecla presionada
-                if event.key == pygame.K_UP and niveles[nivel_actual][player_y - 1][player_x] != "#":
-                    player_y -= 1
-                elif event.key == pygame.K_DOWN and niveles[nivel_actual][player_y + 1][player_x] != "#":
-                    player_y += 1
-                elif event.key == pygame.K_LEFT and niveles[nivel_actual][player_y][player_x - 1] != "#":
-                    player_x -= 1
-                elif event.key == pygame.K_RIGHT and niveles[nivel_actual][player_y][player_x + 1] != "#":
-                    player_x += 1
 
-                # Verificar si el jugador ha llegado a la salida
-                if niveles[nivel_actual][player_y][player_x] == "E":
-                    nivel_actual += 1
-                    if nivel_actual < len(niveles):
-                        # Reiniciar la posición del jugador para el próximo nivel
-                        player_x, player_y = 1, 1
-                    else:
-                        print("¡Has completado todos los niveles!")
-                        running = False
-            except IndexError:
-                pass  # Ignora intentos de moverse fuera de los límites del laberinto
+        if estado_juego == 0:  # Pantalla de inicio
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    estado_juego = 1  # Comenzar el juego
+
+        elif estado_juego == 1:  # Jugando
+            if event.type == pygame.KEYDOWN:
+                try:
+                    # Mover al jugador en función de la tecla presionada
+                    if event.key == pygame.K_UP and niveles[nivel_actual][player_y - 1][player_x] != "#":
+                        player_y -= 1
+                    elif event.key == pygame.K_DOWN and niveles[nivel_actual][player_y + 1][player_x] != "#":
+                        player_y += 1
+                    elif event.key == pygame.K_LEFT and niveles[nivel_actual][player_y][player_x - 1] != "#":
+                        player_x -= 1
+                    elif event.key == pygame.K_RIGHT and niveles[nivel_actual][player_y][player_x + 1] != "#":
+                        player_x += 1
+
+                    # Verificar si el jugador ha llegado a la salida
+                    if niveles[nivel_actual][player_y][player_x] == "E":
+                        nivel_actual += 1
+                        if nivel_actual < len(niveles):
+                            # Reiniciar la posición del jugador para el próximo nivel
+                            player_x, player_y = 1, 1
+                        else:
+                            estado_juego = 2  # Juego completo
+                except IndexError:
+                    pass  # Ignora intentos de moverse fuera de los límites del laberinto
 
     # Dibujar el laberinto y al jugador
     screen.fill(WHITE)
-    for y, row in enumerate(niveles[nivel_actual]):
-        for x, cell in enumerate(row):
-            if cell == "#":
-                pygame.draw.rect(screen, RED, (x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE))
-    pygame.draw.rect(screen, GREEN, (player_x * CELL_SIZE, player_y * CELL_SIZE, CELL_SIZE, CELL_SIZE))
+    if estado_juego == 1:
+        for y, row in enumerate(niveles[nivel_actual]):
+            for x, cell in enumerate(row):
+                if cell == "#":
+                    pygame.draw.rect(screen, RED, (x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE))
+        pygame.draw.rect(screen, GREEN, (player_x * CELL_SIZE, player_y * CELL_SIZE, CELL_SIZE, CELL_SIZE))
 
     # Mostrar el número de nivel actual en pantalla
-    nivel_texto = font.render(f"Nivel {nivel_actual + 1}", True, BLACK)
-    screen.blit(nivel_texto, (10, 10))
+    if estado_juego == 1:
+        nivel_texto = font.render(f"Nivel {nivel_actual + 1}", True, BLACK)
+        screen.blit(nivel_texto, (10, 10))
+    elif estado_juego == 0:  # Pantalla de inicio
+        screen.blit(inicio_texto, inicio_rect)
 
     pygame.display.update()
 
