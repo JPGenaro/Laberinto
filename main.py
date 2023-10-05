@@ -12,6 +12,9 @@ WIDTH, HEIGHT = 800, 600
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Juego de Laberinto - Rintobel")
 
+# Cargar niveles desde el archivo
+niveles = cargar_niveles("niveles.txt")
+
 # Tamaño de celda
 CELL_SIZE = min(WIDTH // len(niveles[0][0]), HEIGHT // len(niveles[0]))
 
@@ -81,7 +84,17 @@ while running:
 
     # Dibujar el laberinto y al jugador
     if estado_juego == 1:
-        dibujar_laberinto(screen, niveles, nivel_actual, player_x, player_y, CELL_SIZE)
+    # Calcular la posición de inicio para dibujar el laberinto
+        laberinto_x = (WIDTH - len(niveles[nivel_actual][0]) * CELL_SIZE) // 2
+        laberinto_y = (HEIGHT - len(niveles[nivel_actual]) * CELL_SIZE) // 2
+
+        for y, row in enumerate(niveles[nivel_actual]):
+            for x, cell in enumerate(row):
+                if cell == "#":
+                    pygame.draw.rect(screen, YELLOW, (laberinto_x + x * CELL_SIZE, laberinto_y + y * CELL_SIZE, CELL_SIZE, CELL_SIZE))
+                elif cell == "E":
+                    pygame.draw.rect(screen, RED, (laberinto_x + x * CELL_SIZE, laberinto_y + y * CELL_SIZE, CELL_SIZE, CELL_SIZE))
+        pygame.draw.rect(screen, GREEN, (laberinto_x + player_x * CELL_SIZE, laberinto_y + player_y * CELL_SIZE, CELL_SIZE, CELL_SIZE))
 
     # Mostrar el número de nivel actual en pantalla
     if estado_juego == 1:
