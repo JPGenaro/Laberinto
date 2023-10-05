@@ -1,23 +1,25 @@
 # main.py
 import pygame
 import sys
-from laberinto import cargar_niveles
+from laberinto import cargar_niveles, generar_laberinto
 from pantalla import dibujar_laberinto, BLACK, WHITE, GREEN, RED, YELLOW
 
 # Inicializa Pygame
 pygame.init()
 
 # Configuración de pantalla
-WIDTH, HEIGHT = 800, 600
+WIDTH, HEIGHT = 1200, 800
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Juego de Laberinto - Rintobel")
 
-# Cargar niveles desde el archivo
-niveles = cargar_niveles("niveles.txt")
+# Generar un laberinto aleatorio (por ejemplo, 10 filas x 10 columnas con densidad 0.3)
+laberinto_aleatorio = generar_laberinto(20, 20, 0.3)
 
 # Tamaño de celda
-CELL_SIZE = min(WIDTH // len(niveles[0][0]), HEIGHT // len(niveles[0]))
+CELL_SIZE = min(WIDTH // len(laberinto_aleatorio[0]), HEIGHT // len(laberinto_aleatorio)) // 2
 
+# Cargar niveles desde el archivo
+niveles = cargar_niveles("niveles.txt")
 # Nivel actual
 nivel_actual = 0
 
@@ -99,7 +101,8 @@ while running:
     # Mostrar el número de nivel actual en pantalla
     if estado_juego == 1:
         nivel_texto = font.render(f"Nivel {nivel_actual + 1}", True, WHITE)
-        screen.blit(nivel_texto, (10, 10))
+        nivel_rect = nivel_texto.get_rect(center=(WIDTH // 2, 30))  # Centrar el texto en la parte superior de la pantalla
+        screen.blit(nivel_texto, nivel_rect) 
     elif estado_juego == 0:  # Pantalla de inicio
         screen.blit(nombre_juego_texto, nombre_juego_rect)
         screen.blit(inicio_texto, inicio_rect)

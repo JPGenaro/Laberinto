@@ -1,4 +1,25 @@
 # laberinto.py
+import random
+
+def generar_laberinto(filas, columnas, densidad_paredes):
+    laberinto = []
+
+    # Crear un laberinto vacío
+    for _ in range(filas):
+        fila = [" " for _ in range(columnas)]
+        laberinto.append(fila)
+
+    # Añadir paredes aleatoriamente
+    for fila in range(1, filas - 1):
+        for columna in range(1, columnas - 1):
+            if random.random() < densidad_paredes:
+                laberinto[fila][columna] = "#"
+
+    # Establecer posición de inicio (S) y meta (E)
+    laberinto[0][1] = "S"
+    laberinto[filas - 1][columnas - 2] = "E"
+
+    return laberinto
 
 def cargar_niveles(filename):
     with open(filename, "r") as file:
